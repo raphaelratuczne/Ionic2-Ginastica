@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-navbar color="dark" setBackButtonText="Voltar">
+    <ion-title>{{head}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <form #gymFomr="ngForm">
+
+    <ion-item>
+      <ion-label color="dark">Data</ion-label>
+      <ion-datetime required name="date" color="primary" displayFormat="DD/MM/YYYY" [(ngModel)]="data.date" doneText="Ok" cancelText="Cancelar"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="dark">Empresa</ion-label>
+      <ion-select required name="company" [(ngModel)]="data.company" submitText="Ok" cancelText="Cancelar">
+        <ion-option *ngFor="let company of companies" [value]="company.name">{{company.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="dark">Ponto</ion-label>
+      <ion-select required name="city" [(ngModel)]="data.city" submitText="Ok" cancelText="Cancelar">
+        <ion-option *ngFor="let city of cities" [value]="city.name">{{city.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="dark">Grupo</ion-label>
+      <ion-select required name="area" [(ngModel)]="data.area" #ar (ionChange)="onAreaSelected(ar.text)" submitText="Ok" cancelText="Cancelar">
+        <ion-option *ngFor="let area of areas" [value]="area.name">{{area.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="dark" fixed>Potencial</ion-label>
+      <ion-input required name="potential" type="number" [(ngModel)]="data.potential" (focus)="selectAll($event)"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="dark" fixed>Participantes</ion-label>
+      <ion-input required name="participants" type="number" [(ngModel)]="data.participants" (focus)="selectAll($event)"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="dark">Falta</ion-label>
+      <ion-select name="absence" [(ngModel)]="data.absence" submitText="Ok" cancelText="Cancelar">
+        <ion-option *ngFor="let absence of absences" [value]="absence.name">{{absence.name}}</ion-option>
+        <ion-option value=""></ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="dark" fixed>Observações</ion-label>
+      <ion-textarea name="observations" [(ngModel)]="data.observations"></ion-textarea>
+    </ion-item>
+
+  </form>
+</ion-content>
+
+<ion-footer padding>
+  <button *ngIf="!id" ion-button full large icon-right [disabled]="gymFomr.invalid" (click)="save()">
+    Salvar
+    <ion-icon name="arrow-dropright-circle"></ion-icon>
+  </button>
+  <button *ngIf="id" ion-button large icon-right (click)="back()">
+    Cancelar
+    <ion-icon name="close-circle"></ion-icon>
+  </button>
+  <button *ngIf="id" ion-button large icon-right [disabled]="!gymFomr.dirty" (click)="update()">
+    Salvar
+    <ion-icon name="arrow-dropright-circle"></ion-icon>
+  </button>
+</ion-footer>

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      Ginastica
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content color="secondary" padding>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <img class="logo" src="assets/iuri_logotipo_mail.png" alt="">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <button color="primary" ion-button full large icon-right (click)="goToAdd()">
+    Coletar dados
+    <ion-icon name="add-circle"></ion-icon>
+  </button>
+  <button color="primary" ion-button full large icon-right (click)="goToList()">
+    Listar dados
+    <ion-icon name="list-box"></ion-icon>
+  </button>
+  <button color="primary" ion-button full large icon-right (click)="goToConfig()">
+    Configurações
+    <ion-icon name="settings"></ion-icon>
+  </button>
+</ion-content>

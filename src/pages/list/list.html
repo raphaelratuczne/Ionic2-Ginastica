@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>Listar dados</ion-title>
+    <ion-buttons [hidden]="!showDel" right>
+      <button ion-button (click)="deleteItens()"><ion-icon name="trash"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+
+    <ng-template ngFor [ngForOf]="itens" let-item>
+      <ion-list-header>{{item.company}}<br>{{item.city}} <ion-note item-right>{{item.date | date:'dd/MM/yy' }}</ion-note></ion-list-header>
+      <ion-item *ngFor="let dados of item.values" [class.selected]="item.class == true" #item (press)="setSelected(item, dados.id)" (tap)="setSelectedTap(item, dados.id)">
+        <h2>{{dados.area}}</h2>
+        <h3>{{dados.participants}} de {{dados.potential}}</h3>
+        <p>{{dados?.absence}}</p>
+        <button ion-button clear item-right (click)="gotToAddPage(dados.id)"><ion-icon name="arrow-forward"></ion-icon></button>
+      </ion-item>
+    </ng-template>
+
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+   <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Carregando dados..."></ion-infinite-scroll-content>
+ </ion-infinite-scroll>
+
+</ion-content>

@@ -41,25 +41,40 @@ export class OptionsDataService {
 
                     let sqlu = 'INSERT INTO options (name, type, users) VALUES (?,?,?)';
                     let sql = 'INSERT INTO options (name, type) VALUES (?,?)';
-                    this.db.sqlBatch([
-                      [ sqlu, ['Empresa de Teste', 'company', JSON.stringify({login:'teste1', pass:'teste1'})] ],
-                      [ sqlu, ['Teste de Empresa', 'company', JSON.stringify({login:'teste2', pass:'teste2'})] ],
-                      [ sqlu, ['Mais um teste', 'company', JSON.stringify({login:'teste3', pass:'teste3'})] ],
-                      [ sql, ['Navegantes', 'city'] ],
-                      [ sql, ['Itajai', 'city'] ],
-                      [ sql, ['Secretaria', 'area'] ],
-                      [ sql, ['Atendimento', 'area'] ],
-                      [ sql, ['Produção', 'area'] ],
-                      [ sql, ['Sessão Realizada', 'absence'] ],
-                      [ sql, ['Doença', 'absence'] ],
-                      [ sql, ['Atraso', 'absence'] ],
-                      [ sql, ['Dispensa da Empresa', 'absence'] ],
-                      [ sql, ['Atestado', 'absence'] ],
-                      [ sql, ['Cancelamento de Sessão', 'absence'] ],
-                      [ sql, ['Reunião', 'absence'] ],
-                    ])
-                    .then(() => console.log('Populou tabela options') )
-                    .catch(e => console.log(e));
+                    // this.db.sqlBatch([
+                    //   [ sqlu, ['Empresa de Teste', 'company', JSON.stringify({login:'teste1', pass:'teste1'})] ],
+                    //   [ sqlu, ['Teste de Empresa', 'company', JSON.stringify({login:'teste2', pass:'teste2'})] ],
+                    //   [ sqlu, ['Mais um teste', 'company', JSON.stringify({login:'teste3', pass:'teste3'})] ],
+                    //   [ sql, ['Navegantes', 'city'] ],
+                    //   [ sql, ['Itajai', 'city'] ],
+                    //   [ sql, ['Secretaria', 'area'] ],
+                    //   [ sql, ['Atendimento', 'area'] ],
+                    //   [ sql, ['Produção', 'area'] ],
+                    //   [ sql, ['Sessão Realizada', 'absence'] ],
+                    //   [ sql, ['Doença', 'absence'] ],
+                    //   [ sql, ['Atraso', 'absence'] ],
+                    //   [ sql, ['Dispensa da Empresa', 'absence'] ],
+                    //   [ sql, ['Atestado', 'absence'] ],
+                    //   [ sql, ['Cancelamento de Sessão', 'absence'] ],
+                    //   [ sql, ['Reunião', 'absence'] ],
+                    // ])
+                    // .then(() => console.log('Populou tabela options') )
+                    // .catch(e => console.log(e));
+                    this.db.executeSql(sqlu, ['Empresa de Teste', 'company', JSON.stringify({login:'teste1', pass:'teste1'})]);
+                    this.db.executeSql(sqlu, ['Teste de Empresa', 'company', JSON.stringify({login:'teste2', pass:'teste2'})]);
+                    this.db.executeSql(sqlu, ['Mais um teste', 'company', JSON.stringify({login:'teste3', pass:'teste3'})]);
+                    this.db.executeSql(sql, ['Navegantes', 'city']);
+                    this.db.executeSql(sql, ['Itajai', 'city']);
+                    this.db.executeSql(sql, ['Secretaria', 'area']);
+                    this.db.executeSql(sql, ['Atendimento', 'area']);
+                    this.db.executeSql(sql, ['Produção', 'area']);
+                    this.db.executeSql(sql, ['Sessão Realizada', 'absence']);
+                    this.db.executeSql(sql, ['Doença', 'absence']);
+                    this.db.executeSql(sql, ['Atraso', 'absence']);
+                    this.db.executeSql(sql, ['Dispensa da Empresa', 'absence']);
+                    this.db.executeSql(sql, ['Atestado', 'absence']);
+                    this.db.executeSql(sql, ['Cancelamento de Sessão', 'absence']);
+                    this.db.executeSql(sql, ['Reunião', 'absence']);
                   }
                 })
                 .catch( this.handleError );

@@ -32,6 +32,7 @@
       <ion-list *ngSwitchCase="'Empresas'">
         <ion-item [class.selected]="item.class == true" #item *ngFor="let company of companies" (press)="setSelected(item, company.id)" (tap)="setSelectedTap(item, company.id)">
           <h2>{{company.name}}</h2>
+          <h3>E-mail: {{company.users.email}}</h3>
           <h3>Usuario: {{company.users.login}} - Senha: {{company.users.pass}}</h3>
           <button ion-button clear item-right (click)="showAddCompany(company)"><ion-icon name="arrow-forward"></ion-icon></button>
         </ion-item>

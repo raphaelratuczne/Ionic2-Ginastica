@@ -40,7 +40,7 @@ export class OptionsPage implements OnInit {
               private toastCtrl: ToastController) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OptionsPage');
+    // console.log('ionViewDidLoad OptionsPage');
   }
 
   /**
@@ -72,12 +72,9 @@ export class OptionsPage implements OnInit {
         { name: 'empresa',
           placeholder: 'Empresa',
           value: (company ? company.name : '') },
-        { name: 'usuario',
-          placeholder: 'Usuário',
-          value: (company ? company.users.login : '') },
-        { name: 'senha',
-          placeholder: 'Senha',
-          value: (company ? company.users.pass : '') },
+        { name: 'email',
+          placeholder: 'E-mail',
+          value: (company ? company.users.email : '') }
       ],
       buttons: [
         { text: 'Cancelar',
@@ -85,13 +82,15 @@ export class OptionsPage implements OnInit {
         }, {
           text: 'Salvar',
           handler: data => {
+            let login = data.empresa.toLowerCase().replace(/\s/g,'');
+            let pass = login + '@' + Math.floor((Math.random() * 1000) + 2000);
             // se enviou id, altera empresa
-            if (company && data.empresa.length > 0 && data.usuario.length > 0 && data.senha.length > 0) {
-              this.optionsDataService.updateCompany({id:company.id, name: data.empresa, login: data.usuario, pass: data.senha})
+            if (company && data.empresa.length > 0 && data.email.length > 0) {
+              this.optionsDataService.updateCompany({id:company.id, name: data.empresa, email:data.email, login: login, pass: pass})
                 .then( resp => this.companies = resp );
             // se nao enviou id, adicona empresa
-            } else if (data.empresa.length > 0 && data.usuario.length > 0 && data.senha.length > 0){
-              this.optionsDataService.addCompany({name: data.empresa, login: data.usuario, pass: data.senha})
+          } else if (data.empresa.length > 0 && data.email.length > 0){
+              this.optionsDataService.addCompany({name: data.empresa, email: data.email, login: login, pass: pass})
                 .then( resp => this.companies = resp );
             } else {
               this.presentToast('Os campos não podem ficar vazios.');

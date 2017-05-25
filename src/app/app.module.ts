@@ -11,6 +11,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AddPage } from '../pages/add/add';
 import { ListPage } from '../pages/list/list';
+import { OptionsPage } from '../pages/options/options';
 import { ConfigPage } from '../pages/config/config';
 import { OptionsDataService } from '../providers/options-data.service';
 import { GymDataService } from '../providers/gym-data.service';
@@ -21,7 +22,8 @@ import { GymDataService } from '../providers/gym-data.service';
     HomePage,
     AddPage,
     ListPage,
-    ConfigPage
+    ConfigPage,
+    OptionsPage
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,8 @@ import { GymDataService } from '../providers/gym-data.service';
     HomePage,
     AddPage,
     ListPage,
-    ConfigPage
+    ConfigPage,
+    OptionsPage
   ],
   providers: [
     StatusBar,

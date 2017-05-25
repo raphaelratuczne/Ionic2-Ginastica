@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-navbar color="dark" setBackButtonText="Voltar">
+    <ion-title>Opções</ion-title>
+    <ion-buttons [hidden]="!showDel" right>
+      <button ion-button (click)="deleteItens()"><ion-icon name="trash"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="segment">
+      <ion-segment-button value="Empresas" (ionSelect)="changeAba('Empresas')">
+        Empresas
+      </ion-segment-button>
+      <ion-segment-button value="Pontos" (ionSelect)="changeAba('Pontos')">
+        Pontos
+      </ion-segment-button>
+      <ion-segment-button value="Grupos" (ionSelect)="changeAba('Grupos')">
+        Grupos
+      </ion-segment-button>
+      <ion-segment-button value="Faltas" (ionSelect)="changeAba('Faltas')">
+        Faltas
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content color="secondary" padding>
+
+  <div [ngSwitch]="segment">
+      <ion-list *ngSwitchCase="'Empresas'">
+        <ion-item [class.selected]="item.class == true" #item *ngFor="let company of companies" (press)="setSelected(item, company.id)" (tap)="setSelectedTap(item, company.id)">
+          <h2>{{company.name}}</h2>
+          <h3>Usuario: {{company.users.login}} - Senha: {{company.users.pass}}</h3>
+          <button ion-button clear item-right (click)="showAddCompany(company)"><ion-icon name="arrow-forward"></ion-icon></button>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'Pontos'">
+        <ion-item [class.selected]="item.class == true" #item *ngFor="let city of cities" (press)="setSelected(item, city.id)" (tap)="setSelectedTap(item, city.id)">
+          {{city.name}}
+          <button ion-button clear item-right (click)="showAddCity(city)"><ion-icon name="arrow-forward"></ion-icon></button>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'Grupos'">
+        <ion-item [class.selected]="item.class == true" #item *ngFor="let area of areas" (press)="setSelected(item, area.id)" (tap)="setSelectedTap(item, area.id)">
+          {{area.name}}
+          <button ion-button clear item-right (click)="showAddArea(area)"><ion-icon name="arrow-forward"></ion-icon></button>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'Faltas'">
+        <ion-item [class.selected]="item.class == true" #item *ngFor="let absence of absences" (press)="setSelected(item, absence.id)" (tap)="setSelectedTap(item, absence.id)">
+          {{absence.name}}
+          <button ion-button clear item-right (click)="showAddAbsence(absence)"><ion-icon name="arrow-forward"></ion-icon></button>
+        </ion-item>
+      </ion-list>
+
+    </div>
+
+</ion-content>
+
+<ion-footer padding>
+  <div [ngSwitch]="segment">
+    <button *ngSwitchCase="'Empresas'" ion-button full large icon-right (click)="showAddCompany()">
+      Adicionar empresa
+      <ion-icon name="add-circle"></ion-icon>
+    </button>
+
+    <button *ngSwitchCase="'Pontos'" ion-button full large icon-right (click)="showAddCity()">
+      Adicionar ponto
+      <ion-icon name="add-circle"></ion-icon>
+    </button>
+
+    <button *ngSwitchCase="'Grupos'" ion-button full large icon-right (click)="showAddArea()">
+      Adicionar grupo
+      <ion-icon name="add-circle"></ion-icon>
+    </button>
+
+    <button *ngSwitchCase="'Faltas'" ion-button full large icon-right (click)="showAddAbsence()">
+      Adicionar falta
+      <ion-icon name="add-circle"></ion-icon>
+    </button>
+
+  </div>
+</ion-footer>

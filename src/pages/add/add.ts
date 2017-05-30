@@ -98,11 +98,20 @@ export class AddPage implements OnInit {
    * @return {string} data atual
    */
   getDate(): string {
-    return new Date() /* nova data */
-              .toLocaleDateString() /* em formato local YYYY-M-D (2017-5-8) */
-              .split('-') /* quebra em um array */
-              .map(el => {return parseInt(el) < 10 ? '0' + el : el;}) /* adiciona 0 antes dos numeros */
-              .join('-'); /* junta em YYYY-MM-DD (2017-05-08) */
+    // return new Date() /* nova data */
+    //           .toLocaleDateString() /* em formato local YYYY-M-D (2017-5-8) */
+    //           .split('-') /* quebra em um array */
+    //           .map(el => {return parseInt(el) < 10 ? '0' + el : el;}) /* adiciona 0 antes dos numeros */
+    //           .join('-'); /* junta em YYYY-MM-DD (2017-05-08) */
+
+    // se retornar a data pelo metodo acima comentado o angular/ionic
+    // converte a data para dd/mm/yyyy e o elemento ion-datetime não reconhece a data
+    let d = new Date();
+    return d.getFullYear() +
+            '-' +
+            (d.getMonth() + 1 < 10 ? ('0' + (d.getMonth() + 1)) : d.getMonth() + 1 ) +
+            '-' +
+            (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
   }
 
   /**

@@ -250,7 +250,7 @@ export class GymDataService {
                                       datetime,
                                       false,
                                       true])
-        .then(() => {return true} )
+        .then(() => {return true;} )
         .catch(e => console.log(e));
 
     } else {

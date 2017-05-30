@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 
 import { OptionsDataService } from '../../providers/options-data.service';
-import { IOptions } from '../../providers/IOption';
 
 @Component({
   selector: 'page-config',

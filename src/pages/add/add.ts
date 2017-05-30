@@ -11,12 +11,19 @@ import { IGymData } from '../../providers/IGymData';
 })
 export class AddPage implements OnInit {
 
+  /** objeto de dados */
   public data: IGymData;
+  /** lista de empresas empresas */
   public companies: any;
+  /** lista de cidades */
   public cities: any;
+  /** lista de areas */
   public areas: any;
+  /** lista de faltas */
   public absences: any;
+  /** id de dado salvo */
   public id: number;
+  /** texto do cabecalho */
   public head: string;
 
   constructor(private navCtrl: NavController,

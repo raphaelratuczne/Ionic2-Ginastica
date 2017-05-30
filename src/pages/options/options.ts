@@ -15,16 +15,12 @@ export class OptionsPage implements OnInit {
 
   /** aba atual */
   public segment: string = 'Empresas';
-  // public company: string;
   /** lista de empresas */
   public companies: IOptions[];
-  // public city: string;
   /** lista de cidades */
   public cities: IOptions[];
-  // public area: string;
   /** lista de grupos */
   public areas: IOptions[];
-  // public absence: string;
   /** lista de faltas */
   public absences: IOptions[];
   /** lista de ids selecionados para encluir */

@@ -46,6 +46,7 @@ export class GymDataService {
         });
 
       } else {
+        // dados em Arrays apenas para testes no navegador
         this.gymDatas = [
           {id:1, date: '2017-03-05', company: 'Empresa de Teste', city: 'Navegantes', area: 'Secretaria', potential: 2, participants: 2, absence: '', observations: '', created_at: '2017-03-05 11:30:25', updated_at: '2017-03-05 11:30:25', synced: false, active: true},
           {id:2, date: '2017-03-05', company: 'Empresa de Teste', city: 'Navegantes', area: 'Atendimento', potential: 3, participants: 2, absence: 'Sessão Realizada', observations: '', created_at: '2017-03-05 11:30:25', updated_at: '2017-03-05 11:30:25', synced: false, active: true},

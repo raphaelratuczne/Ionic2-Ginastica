@@ -8,10 +8,12 @@ import { IOptions, ICompany } from './IOption';
 @Injectable()
 export class OptionsDataService {
 
+  /** listas de dados */
   private companies: IOptions[];
   private cities: IOptions[];
   private areas: IOptions[];
   private absences: IOptions[];
+  /** referencia do sqlite */
   private db: SQLiteObject;
 
   /** instancia dependencias e cria ou conecta ao banco de dados */

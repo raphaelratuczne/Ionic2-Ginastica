@@ -1,3 +1,4 @@
+// interface de dados da tabela gyn
 export interface IGymData {
   id?: number;
   date: string;
@@ -14,7 +15,7 @@ export interface IGymData {
   active?: boolean;
 }
 
-// objeto de dados da lista
+// interface de dados da lista
 export interface IDataGymList {
   date: string;
   company: string;
@@ -22,7 +23,7 @@ export interface IDataGymList {
   values: Array<IDataAreasList>;
 }
 
-// sub objeto de dados da lista
+// interface de sub dados da lista
 export interface IDataAreasList {
   id: number;
   area: string;

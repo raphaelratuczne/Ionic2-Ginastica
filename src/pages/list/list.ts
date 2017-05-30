@@ -31,9 +31,7 @@ export class ListPage implements OnInit, OnDestroy {
               private gymDataService: GymDataService,
               private alertCtrl: AlertController,
               private toastCtrl: ToastController,
-              private events: Events) {
-
-  }
+              private events: Events) {}
 
   // ionViewDidLoad() {
   //   // console.log('ionViewDidLoad ListPage');

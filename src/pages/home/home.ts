@@ -12,27 +12,38 @@ import { ConfigPage } from '../config/config';
 })
 export class HomePage {
 
+  /** referencias aos controllers */
   addPage: any = AddPage;
   listPage: any = ListPage;
   optionsPage: any = OptionsPage;
   configPage: any = ConfigPage;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController) {}
 
-  }
-
+  /**
+   * carrega pg Adicionar
+   */
   goToAdd(): void {
     this.navCtrl.push(this.addPage);
   }
 
+  /**
+   * carrega pg Listar
+   */
   goToList(): void {
     this.navCtrl.push(this.listPage);
   }
 
+  /**
+   * carrega pg Opcoes
+   */
   goToOptions(): void {
     this.navCtrl.push(this.optionsPage);
   }
 
+  /**
+   * carrega pg Configuracoes
+   */
   goToConfig(): void {
     this.navCtrl.push(this.configPage);
   }

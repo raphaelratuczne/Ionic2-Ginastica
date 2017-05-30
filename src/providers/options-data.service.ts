@@ -38,28 +38,25 @@ export class OptionsDataService {
               this.db.executeSql('SELECT count(*) AS total FROM options;', {})
                 .then(resp => {
                   if ( resp.rows.item(0).total < 1 ) {
-
                     let sqlu = 'INSERT INTO options (name, type, users) VALUES (?,?,?)';
                     let sql = 'INSERT INTO options (name, type) VALUES (?,?)';
-                    this.db.sqlBatch([
-                      [ sqlu, ['Empresa de Teste', 'company', JSON.stringify({login:'teste1', pass:'teste1'})] ],
-                      [ sqlu, ['Teste de Empresa', 'company', JSON.stringify({login:'teste2', pass:'teste2'})] ],
-                      [ sqlu, ['Mais um teste', 'company', JSON.stringify({login:'teste3', pass:'teste3'})] ],
-                      [ sql, ['Navegantes', 'city'] ],
-                      [ sql, ['Itajai', 'city'] ],
-                      [ sql, ['Secretaria', 'area'] ],
-                      [ sql, ['Atendimento', 'area'] ],
-                      [ sql, ['Produção', 'area'] ],
-                      [ sql, ['Sessão Realizada', 'absence'] ],
-                      [ sql, ['Doença', 'absence'] ],
-                      [ sql, ['Atraso', 'absence'] ],
-                      [ sql, ['Dispensa da Empresa', 'absence'] ],
-                      [ sql, ['Atestado', 'absence'] ],
-                      [ sql, ['Cancelamento de Sessão', 'absence'] ],
-                      [ sql, ['Reunião', 'absence'] ],
-                    ])
-                    .then(() => console.log('Populou tabela options') )
-                    .catch(e => console.log(e));
+                    this.db.executeSql(sqlu, ['Empresa de Teste', 'company', JSON.stringify({email:'empresateste@email.com', login:'teste1', pass:'teste1', active:true, synced:false})]);
+                    this.db.executeSql(sqlu, ['Teste de Empresa', 'company', JSON.stringify({email:'testeempresa@email.com', login:'teste2', pass:'teste2', active:true, synced:false})]);
+                    this.db.executeSql(sqlu, ['Mais um teste', 'company', JSON.stringify({email:'maisumteste@email.com', login:'teste3', pass:'teste3', active:false, synced:false})]);
+                    this.db.executeSql(sql, ['Navegantes', 'city']);
+                    this.db.executeSql(sql, ['Itajai', 'city']);
+                    this.db.executeSql(sql, ['Secretaria', 'area']);
+                    this.db.executeSql(sql, ['Atendimento', 'area']);
+                    this.db.executeSql(sql, ['Produção', 'area']);
+                    this.db.executeSql(sql, ['Sessão Realizada', 'absence']);
+                    this.db.executeSql(sql, ['Doença', 'absence']);
+                    this.db.executeSql(sql, ['Atraso', 'absence']);
+                    this.db.executeSql(sql, ['Dispensa da Empresa', 'absence']);
+                    this.db.executeSql(sql, ['Atestado', 'absence']);
+                    this.db.executeSql(sql, ['Cancelamento de Sessão', 'absence']);
+                    this.db.executeSql(sql, ['Reunião', 'absence']);
+                    // .then(() => console.log('Populou tabela options') )
+                    // .catch(e => console.log(e));
                   }
                 })
                 .catch( this.handleError );
@@ -70,9 +67,9 @@ export class OptionsDataService {
         })
 
       } else {
-        this.companies = [{ id: 1, name: 'Empresa de Teste', users: {login:'teste1', pass:'teste1'} },
-                          { id: 2, name: 'Teste de Empresa', users: {login:'teste2', pass:'teste2'}  },
-                          { id: 3, name: 'Mais um teste', users: {login:'teste3', pass:'teste3'}  }];
+        this.companies = [{ id: 1, name: 'Empresa de Teste', users: {email:'empresateste@email.com', login:'teste1', pass:'teste1', active:true, synced:false} },
+                          { id: 2, name: 'Teste de Empresa', users: {email:'testeempresa@email.com', login:'teste2', pass:'teste2', active:true, synced:false}  },
+                          { id: 3, name: 'Mais um teste', users: {email:'maisumteste@email.com', login:'teste3', pass:'teste3', active:true, synced:false}  }];
 
         this.cities = [{ id: 1, name: 'Navegantes' },
                        { id: 2, name: 'Itajai' }];
@@ -94,8 +91,8 @@ export class OptionsDataService {
 
   /**
    * extrai dados das consultas
-   * @param  {any}    res resultado da consultas
-   * @return {Array<IOptions>}     resultado extraido
+   * @param {any} res resultado da consultas
+   * @return {Array<IOptions>} resultado extraido
    */
   private extractOptions(res: any): Array<IOptions> {
     // console.log('deu certo \\o/', res);
@@ -108,8 +105,8 @@ export class OptionsDataService {
 
   /**
    * funcao de erro
-   * @param  {any}    error objeto do erro
-   * @return {any}       objeto de erro
+   * @param {any} error objeto do erro
+   * @return {any} objeto de erro
    */
   private  handleError(error: any): any {
     console.log('deu erro T_T', error);
@@ -122,7 +119,7 @@ export class OptionsDataService {
    */
   getCompanies(): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
-      return this.db.executeSql('SELECT id,name,users FROM options WHERE type = "company" ORDER BY name', {})
+    return this.db.executeSql(`SELECT id,name,users FROM options WHERE type = 'company' AND users LIKE '%"active":true%' ORDER BY name`, {})
         .then( res => {
           let opt = [];
           for (let i = 0; i < res.rows.length; i++) {
@@ -132,6 +129,7 @@ export class OptionsDataService {
               users: JSON.parse(res.rows.item(i).users)
             });
           }
+          console.log(opt);
           return opt;
         })
         .catch( this.handleError );
@@ -143,32 +141,32 @@ export class OptionsDataService {
 
   /**
    * adiciona empresa
-   * @param  {ICompany}            company objeto (empresa,usuario,senha)
-   * @return {Promise<IOptions[]>}         lista de empresas
+   * @param {ICompany} company objeto (empresa,usuario,senha)
+   * @return {Promise<IOptions[]>} lista de empresas
    */
   addCompany(company:ICompany): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
       let sql = 'INSERT INTO options (name, type, users) VALUES (?,?,?)';
-      return this.db.executeSql(sql,[company.name, 'company', JSON.stringify({login:company.login, pass:company.pass})])
+      return this.db.executeSql(sql,[company.name, 'company', JSON.stringify({email:company.email, login:company.login, pass:company.pass, active:true, synced:false})])
         .then(() => {return this.getCompanies()} )
         .catch(e => console.log(e));
 
     } else {
       let id = this.companies.reduce((prev,curr) => { return prev.id > curr.id ? prev : curr; }).id + 1;
-      this.companies.push({ id: id, name: company.name, users: {login:company.login, pass:company.pass} });
+      this.companies.push({ id:id, name:company.name, users: {email:company.email, login:company.login, pass:company.pass, active:true, synced:false} });
       return Promise.resolve( this.companies.sort(this.dynamicSort('name')) );
     }
   }
 
   /**
    * altera empresa
-   * @param  {ICompany}            company obeto (id,empresa,usuario,senha)
-   * @return {Promise<IOptions[]>}         lista de empresas
+   * @param {ICompany} company obeto (id,empresa,usuario,senha)
+   * @return {Promise<IOptions[]>} lista de empresas
    */
   updateCompany(company:ICompany): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
       let sql = 'UPDATE options SET name = (?), users = (?) WHERE id = (?)';
-      return this.db.executeSql(sql,[company.name, JSON.stringify({login:company.login, pass:company.pass}), company.id])
+      return this.db.executeSql(sql,[company.name, JSON.stringify({email:company.email, login:company.login, pass:company.pass, active:true, synced:false}), company.id])
         .then(() => {return this.getCompanies()} )
         .catch(e => console.log(e));
 
@@ -176,7 +174,7 @@ export class OptionsDataService {
       for(let i in this.companies) {
         if (this.companies[i].id == company.id) {
           this.companies[i].name = company.name;
-          this.companies[i].users = {login:company.login, pass:company.pass};
+          this.companies[i].users = {email:company.email, login:company.login, pass:company.pass, active:true, synced:false};
         }
       }
       return Promise.resolve( this.companies.sort(this.dynamicSort('name')) );
@@ -185,14 +183,15 @@ export class OptionsDataService {
 
   /**
    * exclui empresa
-   * @param  {Array<number>}       arrIds lista de ids
-   * @return {Promise<IOptions[]>}       lista de empresas
+   * @param {Array<number>} arrIds lista de ids
+   * @return {Promise<IOptions[]>} lista de empresas
    */
   deleteCompanies(arrIds:Array<number>): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
       let arr = arrIds.map(el => {return '?'}).join(',');
-      let sql = 'DELETE FROM options WHERE id IN ('+arr+');';
-      return this.db.executeSql(sql, arrIds)
+      let arrData = ['"active":true','"active":false','"synced":true','"synced":false'].concat(<any[]>arrIds);
+      let sql = `UPDATE options SET users = REPLACE(users, (?), (?)), users = REPLACE(users, (?), (?)) WHERE id IN (${arr});`;
+      return this.db.executeSql(sql, arrData)
         .then(() => {return this.getCompanies();} )
         .catch(e => console.log(e));
 
@@ -226,8 +225,8 @@ export class OptionsDataService {
 
   /**
    * adicionar cidade
-   * @param  {string}              city nome da cidade
-   * @return {Promise<IOptions[]>}      lista de cidades
+   * @param {string} city nome da cidade
+   * @return {Promise<IOptions[]>} lista de cidades
    */
   addCity(city:string): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -245,8 +244,8 @@ export class OptionsDataService {
 
   /**
    * altera cidade
-   * @param  {IOptions}            city objeto (id,cidade)
-   * @return {Promise<IOptions[]>}      lista de cidades
+   * @param {IOptions} city objeto (id,cidade)
+   * @return {Promise<IOptions[]>} lista de cidades
    */
   updateCity(city:IOptions): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -267,8 +266,8 @@ export class OptionsDataService {
 
   /**
    * exclui cidade
-   * @param  {Array<number>}       arrIds lista de ids
-   * @return {Promise<IOptions[]>}       lista de cidades
+   * @param {Array<number>} arrIds lista de ids
+   * @return {Promise<IOptions[]>} lista de cidades
    */
   deleteCities(arrIds:Array<number>): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -308,8 +307,8 @@ export class OptionsDataService {
 
   /**
    * adiciona grupo
-   * @param  {string}              area nome do grupo
-   * @return {Promise<IOptions[]>}       lista de grupos
+   * @param {string} area nome do grupo
+   * @return {Promise<IOptions[]>} lista de grupos
    */
   addArea(area:string): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -327,8 +326,8 @@ export class OptionsDataService {
 
   /**
    * altera grupo
-   * @param  {IOptions}            area objeto (id,grupo)
-   * @return {Promise<IOptions[]>}       lista de grupos
+   * @param {IOptions} area objeto (id,grupo)
+   * @return {Promise<IOptions[]>} lista de grupos
    */
   updateArea(area:IOptions): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -349,8 +348,8 @@ export class OptionsDataService {
 
   /**
    * exclui grupo
-   * @param  {Array<number>}       arrIds lista de ids
-   * @return {Promise<IOptions[]>}       lista de grupos
+   * @param {Array<number>} arrIds lista de ids
+   * @return {Promise<IOptions[]>} lista de grupos
    */
   deleteAreas(arrIds:Array<number>): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -390,8 +389,8 @@ export class OptionsDataService {
 
   /**
    * adiciona falta
-   * @param  {string}              absence falta
-   * @return {Promise<IOptions[]>}         lista de faltas
+   * @param {string} absence falta
+   * @return {Promise<IOptions[]>} lista de faltas
    */
   addAbsence(absence:string): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -409,8 +408,8 @@ export class OptionsDataService {
 
   /**
    * atualiza falta
-   * @param  {IOptions}            absence objeto (id,falta)
-   * @return {Promise<IOptions[]>}         lista de faltas
+   * @param {IOptions} absence objeto (id,falta)
+   * @return {Promise<IOptions[]>} lista de faltas
    */
   updateAbsence(absence:IOptions): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -431,8 +430,8 @@ export class OptionsDataService {
 
   /**
    * exclui faltas
-   * @param  {Array<number>}       arrIds lista de ids
-   * @return {Promise<IOptions[]>}       lista de faltas
+   * @param {Array<number>} arrIds lista de ids
+   * @return {Promise<IOptions[]>} lista de faltas
    */
   deleteAbsences(arrIds:Array<number>): Promise<IOptions[]> {
     if ( this.platform.is('cordova') ) {
@@ -471,25 +470,5 @@ export class OptionsDataService {
       return result * sortOrder;
     }
   }
-
-  // private dynamicSortMultiple(obj1, obj2) {
-  //   /*
-  //    * save the arguments object as it will be overwritten
-  //    * note that arguments object is an array-like object
-  //    * consisting of the names of the properties to sort by
-  //    */
-  //   let props = arguments;
-  //   return (obj1, obj2) => {
-  //     let i = 0, result = 0, numberOfProperties = props.length;
-  //     /* try getting a different result from 0 (equal)
-  //      * as long as we have extra properties to compare
-  //      */
-  //     while(result === 0 && i < numberOfProperties) {
-  //       result = this.dynamicSort(props[i])(obj1, obj2);
-  //         i++;
-  //     }
-  //     return result;
-  //   }
-  // }
 
 }
